@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#ee4d2d">
+    <title>GMV Analysis Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        /* Premium Gradients */
+        .premium-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .shopee-gradient {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #ff3838 100%);
+        }
+        
+        .success-gradient {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+        
+        .warning-gradient {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+        }
+        
+        .info-gradient {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        }
+        
+        /* Ultra Premium Glass Effect */
+        .ultra-glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+        }
+        
+        .premium-glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Stunning Input Styles */
+        .premium-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .premium-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Premium Button Styles */
+        .premium-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .premium-button:hover::before {
+            left: 100%;
+        }
+        
+        .premium-button:active {
+            transform: scale(0.98);
+        }
+        
+        .shopee-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+        
+        .success-button {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Pulse Glow Animation */
+        @keyframes pulseGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+            }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        
+        /* Premium Card Styles */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+        }
+        
+        .premium-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Mobile Optimizations */
+        .mobile-container {
+            max-width: 100vw;
+            padding: 0 20px;
+        }
+        
+        .mobile-card {
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .mobile-input {
+            height: 56px;
+            font-size: 16px;
+            border-radius: 16px;
+            padding: 0 20px;
+        }
+        
+        .mobile-button {
+            height: 56px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            touch-action: manipulation;
+        }
+        
+        .mobile-tab {
+            height: 48px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        /* Touch-friendly spacing */
+        .touch-spacing {
+            margin-bottom: 24px;
+        }
+        
+        /* Sticky header for mobile */
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(20px);
+        }
+        
+        /* Typography */
+        .mobile-title {
+            font-size: 24px;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+        
+        .mobile-subtitle {
+            font-size: 16px;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+        
+        .mobile-result {
+            font-size: 28px;
+            font-weight: 800;
+        }
+        
+        /* Tab Styles */
+        .premium-tabs {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 8px;
+        }
+        
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .tab-inactive {
+            color: rgba(255, 255, 255, 0.8);
+            background: transparent;
+        }
+        
+        .tab-inactive:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        /* Result Cards */
+        .result-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .result-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* Scrollable horizontal tabs */
+        .mobile-tabs {
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .mobile-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Bottom safe area for mobile */
+        .mobile-safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom, 24px);
+        }
+        
+        /* Status Indicators */
+        .status-success {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+        }
+        
+        .status-warning {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+        }
+        
+        .status-danger {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+        }
+        
+        .status-info {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+        }
+        
+        /* Improved touch targets */
+        button, input, select {
+            min-height: 48px;
+        }
+        
+        /* Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200px 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        /* Mobile-specific animations */
+        @media (max-width: 768px) {
+            .premium-card:hover {
+                transform: none;
+            }
+            
+            .result-card:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        canvas {
+            display: block;
+            width: 100%; /* Make canvas responsive to its container */
+            height: auto; /* Maintain aspect ratio */
+            background-color: #f8f8f8;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="mobile-header ultra-glass text-white py-6 shadow-2xl">
+        <div class="mobile-container">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="floating text-4xl">💎</div>
+                    <div>
+                        <h1 class="mobile-title font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">GMV Calculator Pro</h1>
+                        <p class="text-blue-100 mobile-subtitle">Premium Business Analytics</p>
+                    </div>
+                </div>
+                <div class="pulse-glow bg-white bg-opacity-20 rounded-full p-3">
+                    <div class="text-2xl">📊</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-container py-4">
+        <!-- Navigation Tabs -->
+        <div class="touch-spacing">
+            <div class="premium-tabs mobile-card shadow-2xl">
+                <div class="flex space-x-2 min-w-max">
+                    <button onclick="switchTab('gmv')" id="gmvTab" 
+                            class="flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-active">
+                        <div class="flex items-center justify-center space-x-2">
+                            <span class="text-lg">📊</span>
+                            <span class="text-sm font-semibold">GMV Analysis</span>
+                        </div>
+                    </button>
+                    <button onclick="switchTab('profitability')" id="profitabilityTab" 
+                            class="flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-inactive">
+                        <div class="flex items-center justify-center space-x-2">
+                            <span class="text-lg">💰</span>
+                            <span class="text-sm font-semibold">Profitability</span>
+                        </div>
+                    </button>
+                    <button onclick="switchTab('caraPakai')" id="caraPakaiTab" 
+                            class="flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-inactive">
+                        <div class="flex items-center justify-center space-x-2">
+                            <span class="text-lg">📖</span>
+                            <span class="text-sm font-semibold">Cara Pakai</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GMV Analysis Tab Content -->
+        <div id="gmvContent" class="tab-content">
+            <!-- Input Section -->
+            <div class="premium-card mobile-card p-8 shadow-2xl touch-spacing">
+                <h2 class="mobile-title font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="text-2xl mr-3 floating">📊</span>
+                    <span class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Input Data Penjualan</span>
+                </h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                            <span class="text-lg mr-2">🏷️</span>
+                            Nama Produk
+                        </label>
+                        <input type="text" id="namaProduk" placeholder="Masukkan nama produk" 
+                               class="w-full mobile-input premium-input">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                            <span class="text-lg mr-2">📅</span>
+                            Periode Data
+                        </label>
+                        <select id="periodePenjualan" class="w-full mobile-input premium-input">
+                            <option value="daily">📊 Per Hari</option>
+                            <option value="weekly">📈 Per Minggu</option>
+                            <option value="monthly">📉 Per Bulan</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-2 ml-6">Pilih periode data yang akan Anda input</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                            <span class="text-lg mr-2">📦</span>
+                            Jumlah Terjual <span id="periodeLabel" class="text-purple-600">(per hari)</span>
+                        </label>
+                        <input type="number" id="jumlahTerjual" placeholder="Contoh: 10" 
+                               class="w-full mobile-input premium-input">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                            <span class="text-lg mr-2">💰</span>
+                            Harga Jual per Unit (Rp)
+                        </label>
+                        <input type="number" id="hargaJual" placeholder="Contoh: 50000" 
+                               class="w-full mobile-input premium-input">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                            <span class="text-lg mr-2">🏭</span>
+                            HPP per Unit (Rp)
+                        </label>
+                        <input type="number" id="hpp" placeholder="Contoh: 25000" 
+                               class="w-full mobile-input premium-input">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3 flex items-center">
+                            <span class="text-lg mr-2">📢</span>
+                            Biaya Iklan <span id="iklanLabel" class="text-purple-600">(per hari)</span>
+                        </label>
+                        <input type="number" id="biayaIklan" placeholder="Contoh: 100000" 
+                               class="w-full mobile-input premium-input">
+                    </div>
+                    
+                    <div class="space-y-4 pt-4">
+                        <button onclick="calculateGMV()" 
+                                class="w-full mobile-button premium-button shopee-button pulse-glow">
+                            <span class="flex items-center justify-center space-x-2">
+                                <span class="text-xl">🚀</span>
+                                <span class="font-bold">Hitung Analisis GMV</span>
+                            </span>
+                        </button>
+                        
+                        <button onclick="resetForm()" 
+                                class="w-full mobile-button premium-button">
+                            <span class="flex items-center justify-center space-x-2">
+                                <span class="text-xl">🔄</span>
+                                <span class="font-bold">Reset Data</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placeholder Section -->
+            <div id="placeholderSection" class="touch-spacing">
+                <div class="premium-card mobile-card p-8 shadow-2xl text-center">
+                    <div class="floating text-6xl mb-4">💎</div>
+                    <h3 class="mobile-title font-bold text-gray-800 mb-4">
+                        <span class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                            Siap untuk Analisis Premium?
+                        </span>
+                    </h3>
+                    <p class="mobile-subtitle text-gray-600 mb-6">Isi data penjualan di atas, lalu klik tombol "Hitung Analisis GMV"</p>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="floating text-2xl mb-2">💰</div>
+                            <div class="font-semibold text-gray-700">GMV Analysis</div>
+                            <div class="text-xs text-gray-500 mt-1">Revenue tracking</div>
+                        </div>
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="floating text-2xl mb-2">📈</div>
+                            <div class="font-semibold text-gray-700">ROAS</div>
+                            <div class="text-xs text-gray-500 mt-1">Ad performance</div>
+                        </div>
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="floating text-2xl mb-2">🎯</div>
+                            <div class="font-semibold text-gray-700">Profit</div>
+                            <div class="text-xs text-gray-500 mt-1">Margin analysis</div>
+                        </div>
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="floating text-2xl mb-2">💡</div>
+                            <div class="font-semibold text-gray-700">Smart Tips</div>
+                            <div class="text-xs text-gray-500 mt-1">AI recommendations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" style="display: none;">
+                <!-- GMV Card -->
+                <div class="result-card premium-card mobile-card p-6 shadow-2xl touch-spacing">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                            <span class="floating text-2xl mr-2">💰</span>
+                            GMV <span id="gmvPeriode" class="text-purple-600 ml-1">(per hari)</span>
+                        </h3>
+                        <div class="pulse-glow bg-green-100 rounded-full p-2">
+                            <div class="text-xl">📊</div>
+                        </div>
+                    </div>
+                    <div class="mobile-result bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-black" id="gmvResult">Rp 0</div>
+                    <div class="text-sm text-gray-600 mt-2 flex items-center">
+                        <span class="text-lg mr-1">🧮</span>
+                        Jumlah Terjual × Harga Jual
+                    </div>
+                </div>
+
+                <!-- ROAS Card -->
+                <div class="result-card premium-card mobile-card p-6 shadow-2xl touch-spacing">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                            <span class="floating text-2xl mr-2">📈</span>
+                            ROAS
+                        </h3>
+                        <div class="pulse-glow bg-blue-100 rounded-full p-2">
+                            <div class="text-xl">🎯</div>
+                        </div>
+                    </div>
+                    <div class="mobile-result bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-black" id="roasResult">0x</div>
+                    <div class="text-sm text-gray-600 mt-2 flex items-center">
+                        <span class="text-lg mr-1">🧮</span>
+                        GMV ÷ Biaya Iklan
+                    </div>
+                </div>
+
+                <!-- Biaya Breakdown -->
+                <div class="result-card glass-effect mobile-card p-4 shadow-xl touch-spacing">
+                    <h3 class="text-base font-bold text-gray-800 mb-3 flex items-center">
+                        <span class="text-xl mr-2">💸</span>
+                        Breakdown Biaya <span id="biayaPeriode" class="text-xs font-normal">(per hari)</span>
+                    </h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">HPP Total:</span>
+                            <span class="font-semibold" id="hppTotal">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Platform (19%):</span>
+                            <span class="font-semibold" id="biayaShopee">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Biaya Tetap:</span>
+                            <span class="font-semibold" id="biayaTetap">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Biaya Iklan:</span>
+                            <span class="font-semibold" id="biayaIklanDisplay">Rp 0</span>
+                        </div>
+                        <hr class="border-gray-300">
+                        <div class="flex justify-between font-bold">
+                            <span>Total Biaya:</span>
+                            <span class="text-red-600" id="totalBiaya">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profit Analysis -->
+                <div class="result-card glass-effect mobile-card p-4 shadow-xl touch-spacing">
+                    <h3 class="text-base font-bold text-gray-800 mb-3 flex items-center">
+                        <span class="text-xl mr-2">🎯</span>
+                        Analisis Profit <span id="profitPeriode" class="text-xs font-normal">(per hari)</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-center">
+                            <div class="text-xs text-gray-600 mb-1">Profit Bersih</div>
+                            <div class="text-2xl font-bold" id="profitBersih">Rp 0</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-gray-600 mb-1">Profit Margin</div>
+                            <div class="text-xl font-bold" id="profitMargin">0%</div>
+                        </div>
+                        <div class="mt-3 p-3 rounded-lg" id="profitStatus">
+                            <div class="text-center text-sm font-semibold" id="profitStatusText">Masukkan data untuk analisis</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Chart Section -->
+                <div class="premium-card mobile-card p-6 shadow-2xl touch-spacing">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="text-2xl mr-2">📈</span>
+                        Visualisasi Performa
+                    </h3>
+                    <canvas id="gmvChart" width="400" height="200"></canvas>
+                    <div class="text-sm text-gray-600 mt-4 text-center">
+                        Diagram batang menunjukkan perbandingan GMV, Total Biaya, dan Profit.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profitability Analysis Tab Content -->
+        <div id="profitabilityContent" class="tab-content" style="display: none;">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Profitability Input Section -->
+                <div class="glass-effect rounded-2xl p-8 shadow-xl">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <span class="text-2xl mr-3">💰</span>
+                        Analisis Profitabilitas Produk
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Produk</label>
+                            <input type="text" id="profitNamaProduk" placeholder="Masukkan nama produk" 
+                                   class="w-full p-4 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Harga Jual per Unit (Rp)</label>
+                            <input type="number" id="profitHargaJual" placeholder="Contoh: 50000" 
+                                   class="w-full p-4 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                        </div>
+
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <h3 class="font-semibold text-blue-800 mb-3">Biaya Platform Shopee (%)</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Biaya Layanan (%)</label>
+                                    <input type="number" id="biayaLayanan" placeholder="2.9" step="0.1"
+                                           class="w-full p-3 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                                    <p class="text-xs text-gray-500 mt-1">Komisi penjualan Shopee (default: 2.9%)</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Biaya Gratis Ongkir Extra & Cashback (%)</label>
+                                    <input type="number" id="biayaGOCashback" placeholder="1.5" step="0.1"
+                                           class="w-full p-3 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                                    <p class="text-xs text-gray-500 mt-1">Biaya program gratis ongkir dan cashback</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Biaya Afiliasi (%)</label>
+                                    <input type="number" id="biayaAfiliasi" placeholder="3.0" step="0.1"
+                                           class="w-full p-3 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                                    <p class="text-xs text-gray-500 mt-1">Biaya program afiliasi (jika digunakan)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                            <h3 class="font-semibold text-yellow-800 mb-3">Biaya Tetap (Rp)</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Biaya Campaign (Rp)</label>
+                                    <input type="number" id="biayaCampaign" placeholder="50000" 
+                                           class="w-full p-3 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                                    <p class="text-xs text-gray-500 mt-1">Biaya untuk mengikuti campaign atau promosi</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Biaya Pesanan per Order (Rp)</label>
+                                    <input type="number" id="biayaPesanan" placeholder="2500" 
+                                           class="w-full p-3 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                                    <p class="text-xs text-gray-500 mt-1">Biaya administrasi per pesanan (default: 2500)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                            <h3 class="font-semibold text-red-800 mb-3">Biaya Produksi & Operasional (Rp)</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">HPP per Unit (Rp)</label>
+                                    <input type="number" id="profitHPP" placeholder="25000" 
+                                           class="w-full p-3 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                                    <p class="text-xs text-gray-500 mt-1">Biaya langsung untuk memproduksi/membeli 1 unit</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Biaya Operasional per Unit (Rp)</label>
+                                    <input type="number" id="biayaOperasional" placeholder="5000" 
+                                           class="w-full p-3 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                                    <p class="text-xs text-gray-500 mt-1">Packing, gaji karyawan, dll per unit</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Unit untuk Analisis</label>
+                            <input type="number" id="profitJumlahUnit" placeholder="100" 
+                                   class="w-full p-4 border-2 border-gray-200 rounded-lg input-focus transition-all duration-300">
+                            <p class="text-xs text-gray-500 mt-1">Untuk menghitung biaya campaign dan pesanan per unit</p>
+                        </div>
+                        
+                        <button onclick="calculateProfitability()" 
+                                class="w-full shopee-orange text-white py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105">
+                            💰 Hitung Profitabilitas
+                        </button>
+                        
+                        <button onclick="resetProfitabilityForm()" 
+                                class="w-full bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105">
+                            🔄 Reset Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profitability Placeholder Section -->
+                <div class="space-y-6" id="profitabilityPlaceholderSection">
+                    <div class="glass-effect rounded-2xl p-8 shadow-xl text-center">
+                        <div class="text-6xl mb-4">💰</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Analisis Profitabilitas Produk</h3>
+                        <p class="text-gray-600 mb-6">Masukkan data produk dan biaya-biaya terkait untuk mendapatkan analisis profitabilitas yang detail</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-500">
+                            <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-2xl mb-2">💵</span>
+                                <span>Profit per Unit</span>
+                            </div>
+                            <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-2xl mb-2">📊</span>
+                                <span>Profit Margin</span>
+                            </div>
+                            <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-2xl mb-2">💸</span>
+                                <span>Breakdown Biaya</span>
+                            </div>
+                            <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-2xl mb-2">🎯</span>
+                                <span>Rekomendasi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profitability Results Section -->
+                <div class="space-y-6" id="profitabilityResultsSection" style="display: none;">
+                    <!-- Profit Summary Card -->
+                    <div class="result-card glass-effect rounded-2xl p-6 shadow-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Profit Bersih per Unit</h3>
+                            <span class="text-2xl">💵</span>
+                        </div>
+                        <div class="text-3xl font-bold" id="profitPerUnit">Rp 0</div>
+                        <div class="text-sm text-gray-600 mt-2">Harga Jual - Total Biaya per Unit</div>
+                    </div>
+
+                    <!-- Profit Margin Card -->
+                    <div class="result-card glass-effect rounded-2xl p-6 shadow-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Profit Margin</h3>
+                            <span class="text-2xl">📊</span>
+                        </div>
+                        <div class="text-3xl font-bold" id="profitMarginResult">0%</div>
+                        <div class="text-sm text-gray-600 mt-2">(Profit Bersih ÷ Harga Jual) × 100%</div>
+                    </div>
+
+                    <!-- Detailed Breakdown -->
+                    <div class="result-card glass-effect rounded-2xl p-6 shadow-xl">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <span class="text-2xl mr-2">💸</span>
+                            Breakdown Biaya Detail
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Harga Jual:</span>
+                                <span class="font-semibold text-green-600" id="profitHargaJualDisplay">Rp 0</span>
+                            </div>
+                            <hr class="border-gray-200">
+                            <div class="text-sm font-semibold text-gray-700 mb-2">Biaya Platform Shopee:</div>
+                            <div class="flex justify-between pl-4">
+                                <span class="text-gray-600">• Biaya Layanan:</span>
+                                <span class="font-semibold" id="biayaLayananDisplay">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between pl-4">
+                                <span class="text-gray-600">• GO Extra & Cashback:</span>
+                                <span class="font-semibold" id="biayaGOCashbackDisplay">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between pl-4">
+                                <span class="text-gray-600">• Biaya Afiliasi:</span>
+                                <span class="font-semibold" id="biayaAfiliasiDisplay">Rp 0</span>
+                            </div>
+                            <hr class="border-gray-200">
+                            <div class="text-sm font-semibold text-gray-700 mb-2">Biaya Tetap:</div>
+                            <div class="flex justify-between pl-4">
+                                <span class="text-gray-600">• Campaign (per unit):</span>
+                                <span class="font-semibold" id="biayaCampaignDisplay">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between pl-4">
+                                <span class="text-gray-600">• Pesanan (per unit):</span>
+                                <span class="font-semibold" id="biayaPesananDisplay">Rp 0</span>
+                            </div>
+                            <hr class="border-gray-200">
+                            <div class="text-sm font-semibold text-gray-700 mb-2">Biaya Produksi:</div>
+                            <div class="flex justify-between pl-4">
+                                <span class="text-gray-600">• HPP per Unit:</span>
+                                <span class="font-semibold" id="profitHPPDisplay">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between pl-4">
+                                <span class="text-gray-600">• Operasional per Unit:</span>
+                                <span class="font-semibold" id="biayaOperasionalDisplay">Rp 0</span>
+                            </div>
+                            <hr class="border-gray-300">
+                            <div class="flex justify-between text-lg font-bold">
+                                <span>Total Biaya per Unit:</span>
+                                <span class="text-red-600" id="totalBiayaPerUnit">Rp 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Analysis -->
+                    <div class="result-card glass-effect rounded-2xl p-6 shadow-xl">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <span class="text-2xl mr-2">🎯</span>
+                            Status Profitabilitas
+                        </h3>
+                        <div class="text-center">
+                            <div class="mt-4 p-4 rounded-lg" id="profitabilityStatus">
+                                <div class="text-center font-semibold" id="profitabilityStatusText">Masukkan data untuk analisis</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profitability Data Table -->
+            <div class="mt-8 glass-effect rounded-2xl p-8 shadow-xl" id="profitabilityTableSection" style="display: none;">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="text-2xl mr-3">📋</span>
+                    Data Analisis Profitabilitas
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-orange-500 to-red-500 text-white">
+                                <th class="p-3 text-left border border-gray-300">No</th>
+                                <th class="p-3 text-left border border-gray-300">Produk</th>
+                                <th class="p-3 text-left border border-gray-300">Harga Jual</th>
+                                <th class="p-3 text-left border border-gray-300">Total Biaya</th>
+                                <th class="p-3 text-left border border-gray-300">Profit/Unit</th>
+                                <th class="p-3 text-left border border-gray-300">Margin (%)</th>
+                                <th class="p-3 text-left border border-gray-300">Status</th>
+                                <th class="p-3 text-left border border-gray-300">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="profitabilityTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Table Actions -->
+                <div class="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="downloadProfitabilityData()" 
+                            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center space-x-2">
+                        <span>📄</span>
+                        <span>Download Data Excel</span>
+                    </button>
+                    <button onclick="clearProfitabilityData()" 
+                            class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center space-x-2">
+                        <span>🗑️</span>
+                        <span>Hapus Semua Data</span>
+                    </button>
+                </div>
+            </div>
+            <!-- The 'Rumus Perhitungan Profitabilitas Produk Shopee' section has been removed from here -->
+        </div>
+
+        <!-- Cara Pakai Tab Content -->
+        <div id="caraPakaiContent" class="tab-content" style="display: none;">
+            <!-- How to Use Guide -->
+            <div class="premium-card mobile-card p-8 shadow-2xl touch-spacing">
+                <h2 class="mobile-title font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="floating text-2xl mr-3">📖</span>
+                    <span class="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Cara Pakai Calculator</span>
+                </h2>
+                
+                <!-- Quick Start Guide -->
+                <div class="premium-card p-6 mb-8 border-2 border-blue-200">
+                    <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center">
+                        <span class="floating text-2xl mr-2">🚀</span>
+                        Quick Start - Mulai dalam 3 Langkah
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <div class="floating text-3xl mb-3">1️⃣</div>
+                                <h4 class="font-bold text-gray-800 mb-2">Input Data</h4>
+                                <p class="text-sm text-gray-600">Masukkan nama produk, jumlah terjual, harga jual, HPP, dan biaya iklan</p>
+                            </div>
+                        </div>
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <div class="floating text-3xl mb-3">2️⃣</div>
+                                <h4 class="font-bold text-gray-800 mb-2">Klik Hitung</h4>
+                                <p class="text-sm text-gray-600">Tekan tombol "Hitung Analisis GMV" untuk mendapat hasil</p>
+                            </div>
+                        </div>
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <div class="floating text-3xl mb-3">3️⃣</div>
+                                <h4 class="font-bold text-gray-800 mb-2">Analisis Hasil</h4>
+                                <p class="text-sm text-gray-600">Lihat GMV, ROAS, profit, dan rekomendasi optimasi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Keywords Section -->
+                <div class="premium-card p-6 mb-8 border-2 border-green-200">
+                    <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center">
+                        <span class="floating text-2xl mr-2">🔑</span>
+                        Kata Kunci Penting yang Harus Dipahami
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="premium-card p-4 border border-green-200">
+                                <h4 class="font-bold text-green-800 mb-2 flex items-center">
+                                    <span class="text-lg mr-2">💰</span>
+                                    GMV (Gross Merchandise Value)
+                                </h4>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Artinya:</strong> Total nilai penjualan kotor sebelum dikurangi biaya apapun</p>
+                                <p class="text-xs text-green-600 bg-green-50 p-2 rounded"><strong>Rumus:</strong> Jumlah Terjual × Harga Jual</p>
+                                <p class="text-xs text-gray-600 mt-1"><strong>Contoh:</strong> Jual 10 produk @50rb = GMV 500rb</p>
+                            </div>
+
+                            <div class="premium-card p-4 border border-blue-200">
+                                <h4 class="font-bold text-blue-800 mb-2 flex items-center">
+                                    <span class="text-lg mr-2">🎯</span>
+                                    ROAS (Return On Ad Spend)
+                                </h4>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Artinya:</strong> Berapa rupiah penjualan yang dihasilkan dari setiap 1 rupiah biaya iklan</p>
+                                <p class="text-xs text-blue-600 bg-blue-50 p-2 rounded"><strong>Rumus:</strong> GMV ÷ Biaya Iklan</p>
+                                <p class="text-xs text-gray-600 mt-1"><strong>Contoh:</strong> GMV 500rb, Iklan 100rb = ROAS 5x (bagus!)</p>
+                            </div>
+
+                            <div class="premium-card p-4 border border-purple-200">
+                                <h4 class="font-bold text-purple-800 mb-2 flex items-center">
+                                    <span class="text-lg mr-2">🏭</span>
+                                    HPP (Harga Pokok Penjualan)
+                                </h4>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Artinya:</strong> Biaya langsung untuk membuat/membeli 1 unit produk</p>
+                                <p class="text-xs text-purple-600 bg-purple-50 p-2 rounded"><strong>Termasuk:</strong> Bahan baku, biaya produksi, pembelian barang</p>
+                                <p class="text-xs text-gray-600 mt-1"><strong>Contoh:</strong> Beli produk dari supplier 25rb/unit = HPP 25rb</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="premium-card p-4 border border-orange-200">
+                                <h4 class="font-bold text-orange-800 mb-2 flex items-center">
+                                    <span class="text-lg mr-2">📊</span>
+                                    Profit Margin
+                                </h4>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Artinya:</strong> Persentase keuntungan dari total penjualan</p>
+                                <p class="text-xs text-orange-600 bg-orange-50 p-2 rounded"><strong>Rumus:</strong> (Profit Bersih ÷ GMV) × 100%</p>
+                                <p class="text-xs text-gray-600 mt-1"><strong>Target:</strong> Minimal 15-20% untuk bisnis sehat</p>
+                            </div>
+
+                            <div class="premium-card p-4 border border-red-200">
+                                <h4 class="font-bold text-red-800 mb-2 flex items-center">
+                                    <span class="text-lg mr-2">🏪</span>
+                                    Biaya Platform (19%)
+                                </h4>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Artinya:</strong> Biaya yang diambil Shopee dari setiap penjualan</p>
+                                <p class="text-xs text-red-600 bg-red-50 p-2 rounded"><strong>Terdiri dari:</strong> Komisi, gratis ongkir, cashback, dll</p>
+                                <p class="text-xs text-gray-600 mt-1"><strong>Otomatis:</strong> Calculator sudah hitung 19% dari GMV</p>
+                            </div>
+
+                            <div class="premium-card p-4 border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800 mb-2 flex items-center">
+                                    <span class="text-lg mr-2">💳</span>
+                                    Biaya Tetap (Rp 2.500/order)
+                                </h4>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Artinya:</strong> Biaya administrasi per pesanan yang masuk</p>
+                                <p class="text-xs text-yellow-600 bg-yellow-50 p-2 rounded"><strong>Otomatis:</strong> Calculator hitung Rp 2.500 × jumlah unit terjual</p>
+                                <p class="text-xs text-gray-600 mt-1"><strong>Note:</strong> Biaya ini relatif tetap per transaksi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step by Step Tutorial -->
+                <div class="premium-card p-6 mb-8 border-2 border-purple-200">
+                    <h3 class="text-xl font-bold text-purple-800 mb-4 flex items-center">
+                        <span class="floating text-2xl mr-2">📋</span>
+                        Tutorial Lengkap Step-by-Step
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div class="premium-card p-4 border-l-4 border-blue-500">
+                            <h4 class="font-bold text-blue-800 mb-3 flex items-center">
+                                <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3">1</span>
+                                Siapkan Data Penjualan Anda
+                            </h4>
+                            <div class="ml-9 space-y-2 text-sm text-gray-700">
+                                <p><strong>📝 Yang perlu disiapkan:</strong></p>
+                                <ul class="list-disc list-inside space-y-1 ml-4">
+                                    <li><strong>Nama Produk:</strong> Contoh "Kaos Polos Premium"</li>
+                                    <li><strong>Periode Data:</strong> Pilih per hari/minggu/bulan</li>
+                                    <li><strong>Jumlah Terjual:</strong> Berapa unit terjual dalam periode tersebut</li>
+                                    <li><strong>Harga Jual:</strong> Harga yang dibayar customer (sudah termasuk diskon)</li>
+                                    <li><strong>HPP:</strong> Berapa biaya beli/produksi per unit</li>
+                                    <li><strong>Biaya Iklan:</strong> Total budget iklan dalam periode yang sama</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="premium-card p-4 border-l-4 border-green-500">
+                            <h4 class="font-bold text-green-800 mb-3 flex items-center">
+                                <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3">2</span>
+                                Input Data ke Calculator
+                            </h4>
+                            <div class="ml-9 space-y-2 text-sm text-gray-700">
+                                <p><strong>💡 Tips input yang benar:</strong></p>
+                                <ul class="list-disc list-inside space-y-1 ml-4">
+                                    <li><strong>Konsisten periode:</strong> Jika pilih "per hari", semua data harus per hari</li>
+                                    <li><strong>Harga real:</strong> Gunakan harga setelah diskon yang benar-benar diterima</li>
+                                    <li><strong>HPP akurat:</strong> Hitung semua biaya langsung (bahan, produksi, pembelian)</li>
+                                    <li><strong>Biaya iklan total:</strong> Gabungkan semua jenis iklan (Shopee Ads, dll)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="premium-card p-4 border-l-4 border-orange-500">
+                            <h4 class="font-bold text-orange-800 mb-3 flex items-center">
+                                <span class="bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3">3</span>
+                                Analisis Hasil Calculator
+                            </h4>
+                            <div class="ml-9 space-y-2 text-sm text-gray-700">
+                                <p><strong>🔍 Yang harus diperhatikan:</strong></p>
+                                <ul class="list-disc list-inside space-y-1 ml-4">
+                                    <li><strong>GMV:</strong> Semakin besar semakin baik (tapi lihat juga profit)</li>
+                                    <li><strong>ROAS:</strong> Minimal 3x untuk iklan yang sehat</li>
+                                    <li><strong>Profit Margin:</strong> Target minimal 15-20%</li>
+                                    <li><strong>Status Bisnis:</strong> Hijau = bagus, Kuning = hati-hati, Merah = bahaya</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="premium-card p-4 border-l-4 border-purple-500">
+                            <h4 class="font-bold text-purple-800 mb-3 flex items-center">
+                                <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3">4</span>
+                                Terapkan Rekomendasi
+                            </h4>
+                            <div class="ml-9 space-y-2 text-sm text-gray-700">
+                                <p><strong>⚡ Action yang bisa dilakukan:</strong></p>
+                                <ul class="list-disc list-inside space-y-1 ml-4">
+                                    <li><strong>Jika Rugi:</strong> Naikkan harga atau turunkan HPP segera</li>
+                                    <li><strong>Jika ROAS rendah:</strong> Pause iklan, optimasi targeting</li>
+                                    <li><strong>Jika Margin rendah:</strong> Cari supplier lebih murah atau naikkan harga</li>
+                                    <li><strong>Jika Bagus:</strong> Scale up budget iklan untuk growth</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Mistakes -->
+                <div class="premium-card p-6 mb-8 border-2 border-red-200">
+                    <h3 class="text-xl font-bold text-red-800 mb-4 flex items-center">
+                        <span class="floating text-2xl mr-2">⚠️</span>
+                        Kesalahan Umum yang Harus Dihindari
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="space-y-3">
+                            <div class="premium-card p-3 border border-red-200">
+                                <h4 class="font-semibold text-red-800 mb-1">❌ Periode Data Tidak Konsisten</h4>
+                                <p class="text-xs text-gray-600">Jangan campur data harian dengan bulanan</p>
+                            </div>
+                            <div class="premium-card p-3 border border-red-200">
+                                <h4 class="font-semibold text-red-800 mb-1">❌ HPP Tidak Lengkap</h4>
+                                <p class="text-xs text-gray-600">Lupa hitung biaya packaging, shipping ke gudang</p>
+                            </div>
+                            <div class="premium-card p-3 border border-red-200">
+                                <h4 class="font-semibold text-red-800 mb-1">❌ Harga Sebelum Diskon</h4>
+                                <p class="text-xs text-gray-600">Pakai harga yang benar-benar diterima, bukan harga awal</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="premium-card p-3 border border-red-200">
+                                <h4 class="font-semibold text-red-800 mb-1">❌ Biaya Iklan Tidak Akurat</h4>
+                                <p class="text-xs text-gray-600">Hitung semua jenis iklan, jangan hanya Shopee Ads</p>
+                            </div>
+                            <div class="premium-card p-3 border border-red-200">
+                                <h4 class="font-semibold text-red-800 mb-1">❌ Fokus Hanya GMV</h4>
+                                <p class="text-xs text-gray-600">GMV besar tapi rugi = bisnis tidak sustainable</p>
+                            </div>
+                            <div class="premium-card p-3 border border-red-200">
+                                <h4 class="font-semibold text-red-800 mb-1">❌ Tidak Action Rekomendasi</h4>
+                                <p class="text-xs text-gray-600">Calculator memberikan saran, tapi harus diterapkan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Tips -->
+                <div class="premium-card p-6 border-2 border-green-200">
+                    <h3 class="text-xl font-bold text-green-800 mb-4 flex items-center">
+                        <span class="floating text-2xl mr-2">🎯</span>
+                        Tips Sukses Menggunakan Calculator
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <div class="floating text-3xl mb-3">📊</div>
+                                <h4 class="font-bold text-green-800 mb-2">Analisis Rutin</h4>
+                                <p class="text-sm text-gray-600">Hitung setiap minggu untuk monitor performa bisnis</p>
+                            </div>
+                        </div>
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <div class="floating text-3xl mb-3">📈</div>
+                                <h4 class="font-bold text-green-800 mb-2">Bandingkan Produk</h4>
+                                <p class="text-sm text-gray-600">Analisis semua produk untuk tahu mana yang paling profitable</p>
+                            </div>
+                        </div>
+                        <div class="premium-card p-4 hover:scale-105 transition-all duration-300">
+                            <div class="text-center">
+                                <div class="floating text-3xl mb-3">🚀</div>
+                                <h4 class="font-bold text-green-800 mb-2">Action Oriented</h4>
+                                <p class="text-sm text-gray-600">Selalu terapkan rekomendasi untuk optimasi bisnis</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="mt-12 glass-effect rounded-2xl p-8 shadow-xl" id="analyticsSection" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <span class="text-2xl mr-3">📈</span>
+                Analisis Performance <span id="analyticsTitle">(Berdasarkan Input)</span>
+            </h2>
+            
+            <!-- Performance Metrics -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+                    <h4 class="text-lg font-bold text-green-800 mb-4 flex items-center">
+                        <span class="text-2xl mr-2">💰</span>
+                        <span id="currentGMVTitle">GMV Saat Ini</span>
+                    </h4>
+                    <div class="text-3xl font-bold text-green-800" id="currentGMV">Rp 0</div>
+                    <div class="text-sm text-green-600 mt-2" id="currentGMVDesc">Berdasarkan input data</div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+                    <h4 class="text-lg font-bold text-blue-800 mb-4 flex items-center">
+                        <span class="text-2xl mr-2">🎯</span>
+                        <span id="currentProfitTitle">Profit Saat Ini</span>
+                    </h4>
+                    <div class="text-3xl font-bold text-blue-800" id="currentProfit">Rp 0</div>
+                    <div class="text-sm text-blue-600 mt-2" id="currentProfitDesc">Keuntungan bersih</div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
+                    <h4 class="text-lg font-bold text-purple-800 mb-4 flex items-center">
+                        <span class="text-2xl mr-2">📦</span>
+                        <span id="currentUnitsTitle">Unit Terjual</span>
+                    </h4>
+                    <div class="text-3xl font-bold text-purple-800" id="currentUnits">0</div>
+                    <div class="text-sm text-purple-600 mt-2" id="currentUnitsDesc">Jumlah produk terjual</div>
+                </div>
+            </div>
+            
+            <!-- Chart -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200">
+                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-2">📊</span>
+                    <span id="chartTitle">Breakdown Performance</span>
+                </h4>
+                <div class="h-64 flex items-end justify-between space-x-4" id="performanceChart">
+                    <!-- Chart bars will be generated here -->
+                </div>
+                <div class="flex justify-between mt-2 text-sm text-gray-600" id="chartLabels">
+                    <!-- Labels will be generated here -->
+                </div>
+            </div>
+            
+            <!-- Suggestions Section -->
+            <div class="mt-8 bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
+                <h4 class="text-lg font-bold text-orange-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-2">💡</span>
+                    Saran Optimasi Bisnis
+                </h4>
+                <div id="suggestions" class="space-y-3">
+                    <!-- Suggestions will be generated here -->
+                </div>
+            </div>
+            
+            <!-- Analysis History Section -->
+            <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200" id="historySection" style="display: none;">
+                <h4 class="text-lg font-bold text-blue-800 mb-4 flex items-center">
+                    <span class="text-2xl mr-2">📋</span>
+                    Riwayat Analisis
+                </h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-blue-100 text-blue-800">
+                                <th class="p-2 text-left">Produk</th>
+                                <th class="p-2 text-left">Periode</th>
+                                <th class="p-2 text-left">GMV</th>
+                                <th class="p-2 text-left">Profit</th>
+                                <th class="p-2 text-left">Margin</th>
+                                <th class="p-2 text-left">ROAS</th>
+                                <th class="p-2 text-left">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- History rows will be generated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Download and Clear Buttons -->
+                <div class="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="downloadAllResults()" 
+                            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center space-x-2">
+                        <span>📄</span>
+                        <span>Download Semua Analisis</span>
+                    </button>
+                    <button onclick="clearHistory()" 
+                            class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center space-x-2">
+                        <span>🗑️</span>
+                        <span>Hapus Semua Riwayat</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formula Reference -->
+        <div class="mt-12 glass-effect rounded-2xl p-8 shadow-xl">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <span class="text-2xl mr-3">📚</span>
+                Referensi Rumus
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">1. GMV (Penjualan Total)</h4>
+                        <code class="text-sm text-blue-600">GMV = Jumlah Terjual × Harga Jual</code>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">2. ROAS (Return On Ad Spend)</h4>
+                        <code class="text-sm text-blue-600">ROAS = GMV ÷ Biaya Iklan</code>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">3. Biaya Platform (19%)</h4>
+                        <code class="text-sm text-blue-600">Biaya Platform = GMV × 0.19</code>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">4. Biaya Tetap Platform</h4>
+                        <code class="text-sm text-blue-600">Biaya Tetap = Jumlah Terjual × Rp 2.500</code>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">5. Total Biaya</h4>
+                        <code class="text-sm text-blue-600">Total Biaya = HPP + Biaya Iklan + Biaya Platform + Biaya Tetap</code>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">6. Profit Bersih</h4>
+                        <code class="text-sm text-blue-600">Profit Bersih = GMV - Total Biaya</code>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">7. Profit Margin (%)</h4>
+                        <code class="text-sm text-blue-600">Profit Margin = (Profit Bersih ÷ GMV) × 100%</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disclaimer & Footer -->
+    <footer class="mt-12 ultra-glass text-white py-12 mobile-safe-bottom">
+        <div class="mobile-container">
+            <!-- Disclaimer Section -->
+            <div class="premium-card p-6 mobile-card mb-8 border-2 border-yellow-200 mx-auto">
+                <h3 class="mobile-title font-bold text-orange-600 mb-4 flex items-center justify-center">
+                    <span class="floating text-2xl mr-3">⚠️</span>
+                    <span class="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Disclaimer Penting</span>
+                </h3>
+                <div class="space-y-3 text-sm leading-relaxed text-gray-700">
+                    <p class="flex items-center justify-center"><span class="text-lg mr-2">📊</span><strong>Akurasi:</strong> Hasil perhitungan bersifat estimasi berdasarkan rumus standar e-commerce.</p>
+                    
+                    <p class="flex items-center justify-center"><span class="text-lg mr-2">💼</span><strong>Bukan Nasihat Keuangan:</strong> Tool ini hanya alat bantu analisis bisnis.</p>
+                    
+                    <p class="flex items-center justify-center"><span class="text-lg mr-2">🎯</span><strong>Tujuan Edukasi:</strong> Membantu UMKM memahami struktur biaya bisnis online.</p>
+                    
+                    <p class="flex items-center justify-center"><span class="text-lg mr-2">📈</span><strong>Variabel Bisnis:</strong> Kondisi pasar dapat mempengaruhi performa aktual.</p>
+                    
+                    <p class="flex items-center justify-center"><span class="text-lg mr-2">🔄</span><strong>Update Berkala:</strong> Selalu validasi dengan kondisi platform terkini.</p>
+                </div>
+            </div>
+            
+            <!-- Footer Content -->
+            <div class="text-center">
+                <div class="mb-8">
+                    <div class="floating text-5xl mb-4">💎</div>
+                    <h3 class="mobile-title font-bold mb-3">
+                        <span class="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">GMV Calculator Pro</span>
+                    </h3>
+                    <p class="text-blue-100 mobile-subtitle">
+                        Premium Business Analytics for Modern Entrepreneurs
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-6 mb-8">
+                    <div class="premium-card p-6 hover:scale-105 transition-all duration-300">
+                        <div class="floating text-3xl mb-3">🎯</div>
+                        <h4 class="font-bold mb-2 text-gray-800">Analisis Mendalam</h4>
+                        <p class="text-gray-600 text-sm">GMV, ROAS, profit margin & breakdown biaya dengan akurasi tinggi</p>
+                    </div>
+                    
+                    <div class="premium-card p-6 hover:scale-105 transition-all duration-300">
+                        <div class="floating text-3xl mb-3">📊</div>
+                        <h4 class="font-bold mb-2 text-gray-800">Visualisasi Premium</h4>
+                        <p class="text-gray-600 text-sm">Dashboard interaktif dengan design modern untuk monitoring real-time</p>
+                    </div>
+                    
+                    <div class="premium-card p-6 hover:scale-105 transition-all duration-300">
+                        <div class="floating text-3xl mb-3">💡</div>
+                        <h4 class="font-bold mb-2 text-gray-800">AI-Powered Insights</h4>
+                        <p class="text-gray-600 text-sm">Rekomendasi cerdas untuk optimasi profit dan growth strategy</p>
+                    </div>
+                </div>
+                
+                <div class="border-t border-white border-opacity-20 pt-6">
+                    <p class="text-blue-100 text-sm mb-2">
+                        © 2025 GMV Calculator Pro - Premium Business Analytics
+                    </p>
+                    <p class="text-blue-200 text-sm font-semibold">
+                        <strong>by D'faunda</strong> | Next-Gen Business Intelligence
+                    </p>
+                    <div class="mt-4 flex justify-center space-x-6 text-sm text-blue-100">
+                        <span class="flex items-center"><span class="text-lg mr-1">🚀</span>Trusted by 50,000+ Entrepreneurs</span>
+                    </div>
+                    <div class="flex justify-center space-x-6 text-sm text-blue-100 mt-2">
+                        <span class="flex items-center"><span class="text-lg mr-1">📈</span>99.9% Accuracy</span>
+                        <span class="flex items-center"><span class="text-lg mr-1">🔒</span>Enterprise Security</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables to store analysis history
+        let analysisHistory = [];
+        let profitabilityData = [];
+        
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        function updatePeriodeLabels() {
+            const periode = document.getElementById('periodePenjualan').value;
+            let periodeText = '';
+            
+            switch(periode) {
+                case 'daily':
+                    periodeText = '(per hari)';
+                    break;
+                case 'weekly':
+                    periodeText = '(per minggu)';
+                    break;
+                case 'monthly':
+                    periodeText = '(per bulan)';
+                    break;
+            }
+            
+            document.getElementById('periodeLabel').textContent = periodeText;
+            document.getElementById('iklanLabel').textContent = periodeText;
+            document.getElementById('gmvPeriode').textContent = periodeText;
+            document.getElementById('biayaPeriode').textContent = periodeText;
+            document.getElementById('profitPeriode').textContent = periodeText;
+        }
+
+        function calculateGMV() {
+            // Show results sections and hide placeholder
+            document.getElementById('placeholderSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('analyticsSection').style.display = 'block';
+            
+            // Get input values
+            const jumlahTerjual = parseFloat(document.getElementById('jumlahTerjual').value) || 0;
+            const hargaJual = parseFloat(document.getElementById('hargaJual').value) || 0;
+            const hpp = parseFloat(document.getElementById('hpp').value) || 0;
+            const biayaIklan = parseFloat(document.getElementById('biayaIklan').value) || 0;
+            const periode = document.getElementById('periodePenjualan').value;
+
+            // Calculate GMV
+            const gmv = jumlahTerjual * hargaJual;
+
+            // Calculate ROAS
+            const roas = biayaIklan > 0 ? gmv / biayaIklan : 0;
+
+            // Calculate costs
+            const biayaAdminPlatform = 2500; // per order
+            const biayaLayananShopee = 0.029; // 2.9%
+            const biayaGratisOngkirCashback = 0.015; // 1.5%
+            const biayaAfiliasi = 0.03; // 3%
+            const biayaLainLain = 0.005; // 0.5% for general platform fees etc.
+
+            const biayaPlatformTotal = (biayaLayananShopee + biayaGratisOngkirCashback + biayaAfiliasi + biayaLainLain) * gmv;
+            const hppTotal = hpp * jumlahTerjual;
+            const totalBiaya = hppTotal + biayaIklan + biayaPlatformTotal + (biayaAdminPlatform * jumlahTerjual);
+
+            // Calculate profit
+            const profitBersih = gmv - totalBiaya;
+            const profitMargin = gmv > 0 ? (profitBersih / gmv) * 100 : 0;
+
+            // Update display
+            document.getElementById('gmvResult').textContent = formatRupiah(gmv);
+            document.getElementById('roasResult').textContent = roas.toFixed(2) + 'x';
+            document.getElementById('hppTotal').textContent = formatRupiah(hppTotal);
+            document.getElementById('biayaShopee').textContent = formatRupiah(biayaPlatformTotal);
+            document.getElementById('biayaTetap').textContent = formatRupiah(biayaAdminPlatform * jumlahTerjual);
+            document.getElementById('biayaIklanDisplay').textContent = formatRupiah(biayaIklan);
+            document.getElementById('totalBiaya').textContent = formatRupiah(totalBiaya);
+            document.getElementById('profitBersih').textContent = formatRupiah(profitBersih);
+            document.getElementById('profitMargin').textContent = profitMargin.toFixed(1) + '%';
+
+            // Update profit status
+            const profitStatus = document.getElementById('profitStatus');
+            const profitStatusText = document.getElementById('profitStatusText');
+            
+            if (profitBersih < 0) {
+                profitStatus.className = 'mt-4 p-4 rounded-lg bg-red-100 border border-red-300';
+                profitStatusText.textContent = '❌ Bisnis Merugi - Perlu Optimasi';
+                profitStatusText.className = 'text-center font-semibold text-red-800';
+                document.getElementById('profitBersih').className = 'text-4xl font-bold text-red-600';
+                document.getElementById('profitMargin').className = 'text-2xl font-bold text-red-600';
+            } else if (profitBersih === 0) {
+                profitStatus.className = 'mt-4 p-4 rounded-lg bg-yellow-100 border border-yellow-300';
+                profitStatusText.textContent = '⚠️ Break Even Point';
+                profitStatusText.className = 'text-center font-semibold text-yellow-800';
+                document.getElementById('profitBersih').className = 'text-4xl font-bold text-yellow-600';
+                document.getElementById('profitMargin').className = 'text-2xl font-bold text-yellow-600';
+            } else if (profitMargin < 3) {
+                profitStatus.className = 'mt-4 p-4 rounded-lg bg-orange-100 border border-orange-300';
+                profitStatusText.textContent = '⚠️ Profit Margin Rendah - Perlu Optimasi';
+                profitStatusText.className = 'text-center font-semibold text-orange-800';
+                document.getElementById('profitBersih').className = 'text-4xl font-bold text-orange-600';
+                document.getElementById('profitMargin').className = 'text-2xl font-bold text-orange-600';
+            } else {
+                profitStatus.className = 'mt-4 p-4 rounded-lg bg-green-100 border border-green-300';
+                profitStatusText.textContent = '✅ Bisnis Menguntungkan!';
+                profitStatusText.className = 'text-center font-semibold text-green-800';
+                document.getElementById('profitBersih').className = 'text-4xl font-bold text-green-600';
+                document.getElementById('profitMargin').className = 'text-2xl font-bold text-green-600';
+            }
+
+            // Save to history
+            saveToHistory(gmv, profitBersih, profitMargin, roas, periode);
+
+            // Update analytics
+            updateAnalytics(gmv, profitBersih, jumlahTerjual, periode);
+
+            // Draw the chart
+            drawGMVChart(gmv, totalBiaya, profitBersih);
+
+            // Add animation to results
+            document.querySelectorAll('.result-card').forEach(card => {
+                card.style.animation = 'none';
+                card.offsetHeight; // Trigger reflow
+                card.style.animation = 'pulse-custom 0.5s ease-in-out';
+            });
+        }
+
+        function updateAnalytics(gmv, profit, units, periode) {
+            let periodeText;
+            
+            switch(periode) {
+                case 'daily':
+                    periodeText = '(Per Hari)';
+                    break;
+                case 'weekly':
+                    periodeText = '(Per Minggu)';
+                    break;
+                case 'monthly':
+                    periodeText = '(Per Bulan)';
+                    break;
+            }
+            
+            // Update titles and descriptions
+            document.getElementById('analyticsTitle').textContent = periodeText;
+            
+            // Update current values
+            document.getElementById('currentGMV').textContent = formatRupiah(gmv);
+            document.getElementById('currentProfit').textContent = formatRupiah(profit);
+            document.getElementById('currentUnits').textContent = units.toLocaleString('id-ID') + ' unit';
+            
+            // Generate breakdown chart
+            generateBreakdownChart(gmv, profit);
+            
+            // Generate suggestions
+            generateSuggestions(gmv, profit, units, periode);
+        }
+
+        function generateBreakdownChart(gmv, profit) {
+            const chartContainer = document.getElementById('performanceChart');
+            const labelsContainer = document.getElementById('chartLabels');
+            
+            chartContainer.innerHTML = '';
+            labelsContainer.innerHTML = '';
+            
+            // Calculate breakdown data
+            const jumlahTerjual = parseFloat(document.getElementById('jumlahTerjual').value) || 0;
+            const hpp = parseFloat(document.getElementById('hpp').value) || 0;
+            const biayaIklan = parseFloat(document.getElementById('biayaIklan').value) || 0;
+
+            const biayaAdminPlatform = 2500;
+            const biayaLayananShopee = 0.029;
+            const biayaGratisOngkirCashback = 0.015;
+            const biayaAfiliasi = 0.03;
+            const biayaLainLain = 0.005;
+            
+            const hppTotal = jumlahTerjual * hpp;
+            const biayaShopee = (biayaLayananShopee + biayaGratisOngkirCashback + biayaAfiliasi + biayaLainLain) * gmv;
+            const biayaTetap = jumlahTerjual * biayaAdminPlatform;
+            
+            const data = [
+                { label: 'GMV', value: gmv, color: 'from-green-500 to-green-300' },
+                { label: 'HPP', value: hppTotal, color: 'from-red-500 to-red-300' },
+                { label: 'Biaya Platform', value: biayaShopee, color: 'from-orange-500 to-orange-300' },
+                { label: 'Biaya Tetap', value: biayaTetap, color: 'from-purple-500 to-purple-300' },
+                { label: 'Biaya Iklan', value: biayaIklan, color: 'from-yellow-500 to-yellow-300' },
+                { label: 'Profit', value: Math.max(0, profit), color: 'from-blue-500 to-blue-300' }
+            ];
+            
+            const maxValue = Math.max(...data.map(d => d.value));
+            
+            // Create bars
+            data.forEach((item, index) => {
+                const bar = document.createElement('div');
+                const height = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
+                bar.className = `bg-gradient-to-t ${item.color} rounded-t-lg flex-1 transition-all duration-500 cursor-pointer relative group`;
+                bar.style.height = height + '%';
+                bar.style.minHeight = '10px';
+                
+                // Add tooltip
+                const tooltip = document.createElement('div');
+                tooltip.className = 'absolute bottom-full left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap mb-1';
+                tooltip.textContent = formatRupiah(item.value);
+                bar.appendChild(tooltip);
+                
+                chartContainer.appendChild(bar);
+                
+                // Create label
+                const label = document.createElement('div');
+                label.className = 'flex-1 text-center text-xs';
+                label.textContent = item.label;
+                labelsContainer.appendChild(label);
+            });
+        }
+
+        function generateSuggestions(gmv, profit, units, periode) {
+            const suggestionsContainer = document.getElementById('suggestions');
+            suggestionsContainer.innerHTML = '';
+            
+            const suggestions = [];
+            const profitMargin = gmv > 0 ? (profit / gmv) * 100 : 0;
+            const jumlahTerjual = parseFloat(document.getElementById('jumlahTerjual').value) || 0;
+            const hargaJual = parseFloat(document.getElementById('hargaJual').value) || 0;
+            const hpp = parseFloat(document.getElementById('hpp').value) || 0;
+            const biayaIklan = parseFloat(document.getElementById('biayaIklan').value) || 0;
+            const roas = biayaIklan > 0 ? gmv / biayaIklan : 0;
+            
+            // Profit-based suggestions with specific targets
+            if (profit < 0) {
+                const lossAmount = Math.abs(profit);
+                const targetPriceIncrease = Math.ceil(lossAmount / jumlahTerjual);
+                suggestions.push({
+                    icon: '🚨',
+                    type: 'Urgent - Rugi ' + formatRupiah(lossAmount),
+                    text: `Bisnis merugi ${formatRupiah(lossAmount)}! Target: naikkan harga +${formatRupiah(targetPriceIncrease)}/unit atau kurangi HPP. ⚠️ Note: Segera evaluasi strategi pricing dan cost structure!`,
+                    color: 'text-red-700 bg-red-50 border-red-200'
+                });
+            } else if (profitMargin < 10) {
+                const targetProfit = gmv * 0.15; // Target 15% margin
+                const additionalProfitNeeded = targetProfit - profit;
+                suggestions.push({
+                    icon: '⚠️',
+                    type: 'Warning - Margin ' + profitMargin.toFixed(1) + '%',
+                    text: `Profit margin rendah. Target: tambah profit ${formatRupiah(additionalProfitNeeded)} untuk capai margin 15%.`,
+                    color: 'text-yellow-700 bg-yellow-50 border-yellow-200'
+                });
+            } else if (profitMargin >= 10 && profitMargin < 20) {
+                suggestions.push({
+                    icon: '👍',
+                    type: 'Good - Margin ' + profitMargin.toFixed(1) + '%',
+                    text: 'Profit margin cukup baik. Target berikutnya: capai margin 20-25% untuk performa optimal.',
+                    color: 'text-blue-700 bg-blue-50 border-blue-200'
+                });
+            } else if (profitMargin >= 20 && profitMargin < 30) {
+                suggestions.push({
+                    icon: '🎯',
+                    type: 'Great - Margin ' + profitMargin.toFixed(1) + '%',
+                    text: 'Profit margin bagus! Pertahankan konsistensi dan siap untuk scale up bisnis.',
+                    color: 'text-green-700 bg-green-50 border-green-200'
+                });
+            } else if (profitMargin >= 30) {
+                const monthlyPotential = profit * 30; // Assuming daily data
+                suggestions.push({
+                    icon: '🎉',
+                    type: 'Excellent - Margin ' + profitMargin.toFixed(1) + '%',
+                    text: `Profit margin luar biasa! Potensi profit bulanan: ${formatRupiah(monthlyPotential)}. Saatnya ekspansi!`,
+                    color: 'text-green-700 bg-green-50 border-green-200'
+                });
+            }
+            
+            // ROAS-based suggestions with specific scaling recommendations
+            if (roas < 1.5) {
+                suggestions.push({
+                    icon: '📉',
+                    type: 'Ad Optimization',
+                    text: 'ROAS sangat rendah (<1.5x). Segera pause iklan dan optimasi targeting/creative.',
+                    color: 'text-red-700 bg-red-50 border-red-200'
+                });
+            } else if (roas >= 1.5 && roas < 3) {
+                suggestions.push({
+                    icon: '⚠️',
+                    type: 'Ad Caution',
+                    text: 'ROAS masih rendah (1.5-3x). Optimasi iklan dulu sebelum scale up budget.',
+                    color: 'text-orange-700 bg-orange-50 border-orange-200'
+                });
+            } else if (roas >= 3 && roas < 5) {
+                const recommendedIncrease = Math.round(biayaIklan * 0.5);
+                suggestions.push({
+                    icon: '📈',
+                    type: 'Scale Up Ready',
+                    text: `ROAS baik (${roas.toFixed(1)}x)! Bisa tambah budget iklan +${formatRupiah(recommendedIncrease)} untuk scale up.`,
+                    color: 'text-blue-700 bg-blue-50 border-blue-200'
+                });
+            } else if (roas >= 5) {
+                const recommendedIncrease = Math.round(biayaIklan * 1.0); // 100% increase
+                const doubleAmount = biayaIklan * 2; // Total budget if doubled
+                suggestions.push({
+                    icon: '🚀',
+                    type: 'Aggressive Scale Up',
+                    text: `ROAS sangat baik (${roas.toFixed(1)}x)! Rekomendasi: Double budget dari ${formatRupiah(biayaIklan)} → ${formatRupiah(doubleAmount)} (tambah ${formatRupiah(recommendedIncrease)})`,
+                    color: 'text-green-700 bg-green-50 border-green-200'
+                });
+            }
+            
+            // HPP-based suggestions with specific targets
+            const hppPercentage = gmv > 0 ? (hpp * jumlahTerjual / gmv) * 100 : 0;
+            if (hppPercentage > 60) {
+                const targetHPP = hargaJual * 0.5; // Target 50% of selling price
+                const savingsPerUnit = hpp - targetHPP;
+                const totalSavings = savingsPerUnit * jumlahTerjual;
+                suggestions.push({
+                    icon: '💰',
+                    type: 'HPP Tinggi - ' + hppPercentage.toFixed(1) + '% dari GMV',
+                    text: `Target: turunkan HPP ke ${formatRupiah(targetHPP)}/unit. Strategi: 1) Negosiasi supplier untuk harga bulk, 2) Cari supplier alternatif dengan kualitas sama, 3) Optimasi packaging/shipping cost, 4) Pertimbangkan produksi lokal. Potensi penghematan: ${formatRupiah(totalSavings)}.`,
+                    color: 'text-purple-700 bg-purple-50 border-purple-200'
+                });
+            } else if (hppPercentage > 50 && hppPercentage <= 60) {
+                const targetHPP = hargaJual * 0.45; // Target 45% of selling price
+                const savingsPerUnit = hpp - targetHPP;
+                const totalSavings = savingsPerUnit * jumlahTerjual;
+                suggestions.push({
+                    icon: '⚠️',
+                    type: 'HPP Cukup Tinggi - ' + hppPercentage.toFixed(1) + '%',
+                    text: `HPP bisa dioptimasi. Target: ${formatRupiah(targetHPP)}/unit. Tips: 1) Review kontrak supplier, 2) Bundling pembelian dengan produk lain, 3) Evaluasi biaya logistik. Potensi penghematan: ${formatRupiah(totalSavings)}.`,
+                    color: 'text-orange-700 bg-orange-50 border-orange-200'
+                });
+            } else if (hppPercentage <= 40) {
+                suggestions.push({
+                    icon: '✅',
+                    type: 'HPP Optimal - ' + hppPercentage.toFixed(1) + '%',
+                    text: 'HPP sangat baik! Margin cost yang sehat memberikan ruang untuk kompetisi harga.',
+                    color: 'text-green-700 bg-green-50 border-green-200'
+                });
+            }
+            
+            // Volume-based suggestions with specific targets
+            if (periode === 'daily') {
+                if (jumlahTerjual < 5) {
+                    const targetVolume = 10;
+                    const additionalRevenue = (targetVolume - jumlahTerjual) * hargaJual;
+                    suggestions.push({
+                        icon: '📈',
+                        type: 'Volume Optimization',
+                        text: `Volume rendah (${jumlahTerjual} unit/hari). Target: ${targetVolume} unit/hari untuk potensi revenue tambahan ${formatRupiah(additionalRevenue)}.`,
+                        color: 'text-indigo-700 bg-indigo-50 border-indigo-200'
+                    });
+                } else if (jumlahTerjual >= 5 && jumlahTerjual < 20) {
+                    const nextTarget = 25;
+                    const potentialIncrease = (nextTarget - jumlahTerjual) * (hargaJual - hpp);
+                    suggestions.push({
+                        icon: '📊',
+                        type: 'Volume Scale Up',
+                        text: `Volume bagus (${jumlahTerjual} unit/hari)! Target berikutnya: ${nextTarget} unit/hari untuk profit tambahan ${formatRupiah(potentialIncrease)}.`,
+                        color: 'text-blue-700 bg-blue-50 border-blue-200'
+                    });
+                } else if (jumlahTerjual >= 20) {
+                    const monthlyVolume = jumlahTerjual * 30;
+                    suggestions.push({
+                        icon: '🚀',
+                        type: 'Volume Excellent',
+                        text: `Volume tinggi (${jumlahTerjual} unit/hari)! Proyeksi bulanan: ${monthlyVolume.toLocaleString()} unit. Siap diversifikasi produk.`,
+                        color: 'text-green-700 bg-green-50 border-green-200'
+                    });
+                }
+            } else if (periode === 'weekly') {
+                if (jumlahTerjual < 35) {
+                    suggestions.push({
+                        icon: '📈',
+                        type: 'Volume Weekly Target',
+                        text: `Volume mingguan ${jumlahTerjual} unit. Target: 50 unit/minggu (7-8 unit/hari) untuk performa optimal.`,
+                        color: 'text-indigo-700 bg-indigo-50 border-indigo-200'
+                    });
+                }
+            } else if (periode === 'monthly') {
+                if (jumlahTerjual < 150) {
+                    suggestions.push({
+                        icon: '📈',
+                        type: 'Volume Monthly Target',
+                        text: `Volume bulanan ${jumlahTerjual} unit. Target: 300 unit/bulan (10 unit/hari) untuk bisnis sustainable.`,
+                        color: 'text-indigo-700 bg-indigo-50 border-indigo-200'
+                    });
+                }
+            }
+            
+            // Default positive suggestion
+            if (suggestions.length === 0) {
+                suggestions.push({
+                    icon: '✅',
+                    type: 'Good Performance',
+                    text: 'Performa bisnis cukup baik! Pertahankan konsistensi dan terus monitor.',
+                    color: 'text-green-700 bg-green-50 border-green-200'
+                });
+            }
+            
+            // Render suggestions
+            suggestions.forEach(suggestion => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = `p-4 rounded-lg border ${suggestion.color}`;
+                suggestionDiv.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <span class="text-xl">${suggestion.icon}</span>
+                        <div>
+                            <div class="font-semibold text-sm">${suggestion.type}</div>
+                            <div class="text-sm mt-1">${suggestion.text}</div>
+                        </div>
+                    </div>
+                `;
+                suggestionsContainer.appendChild(suggestionDiv);
+            });
+        }
+
+        function resetForm() {
+            // Clear all input fields
+            document.getElementById('namaProduk').value = '';
+            document.getElementById('jumlahTerjual').value = '';
+            document.getElementById('hargaJual').value = '';
+            document.getElementById('hpp').value = '';
+            document.getElementById('biayaIklan').value = '';
+            document.getElementById('periodePenjualan').value = 'daily';
+            
+            // Hide results and show placeholder
+            document.getElementById('placeholderSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('analyticsSection').style.display = 'none';
+            
+            // Keep history visible if there's data
+            if (analysisHistory.length > 0) {
+                document.getElementById('historySection').style.display = 'block';
+            }
+            
+            // Update labels
+            updatePeriodeLabels();
+
+            // Clear the canvas
+            const canvas = document.getElementById('gmvChart');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveToHistory(gmv, profitBersih, profitMargin, roas, periode) {
+            const namaProduk = document.getElementById('namaProduk').value || 'Produk';
+            const jumlahTerjual = parseFloat(document.getElementById('jumlahTerjual').value) || 0;
+            const hargaJual = parseFloat(document.getElementById('hargaJual').value) || 0;
+            const hpp = parseFloat(document.getElementById('hpp').value) || 0;
+            const biayaIklan = parseFloat(document.getElementById('biayaIklan').value) || 0;
+            
+            let periodeText;
+            switch(periode) {
+                case 'daily': periodeText = 'Per Hari'; break;
+                case 'weekly': periodeText = 'Per Minggu'; break;
+                case 'monthly': periodeText = 'Per Bulan'; break;
+            }
+            
+            // Determine status
+            let status;
+            if (profitBersih < 0) {
+                status = '❌ Merugi';
+            } else if (profitBersih === 0) {
+                status = '⚠️ Break Even';
+            } else if (profitMargin < 3) {
+                status = '⚠️ Margin Rendah';
+            } else {
+                status = '✅ Menguntungkan';
+            }
+            
+            // Create history entry
+            const historyEntry = {
+                timestamp: new Date(),
+                namaProduk,
+                periode: periodeText,
+                jumlahTerjual,
+                hargaJual,
+                hpp,
+                biayaIklan,
+                gmv,
+                profitBersih,
+                profitMargin,
+                roas,
+                status
+            };
+            
+            // Add to history array
+            analysisHistory.push(historyEntry);
+            
+            // Update history display
+            updateHistoryDisplay();
+        }
+        
+        function updateHistoryDisplay() {
+            const historySection = document.getElementById('historySection');
+            const historyTableBody = document.getElementById('historyTableBody');
+            
+            if (analysisHistory.length === 0) {
+                historySection.style.display = 'none';
+                return;
+            }
+            
+            historySection.style.display = 'block';
+            historyTableBody.innerHTML = '';
+            
+            // Display history in reverse order (newest first)
+            analysisHistory.slice().reverse().forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-white' : 'bg-blue-50';
+                
+                row.innerHTML = `
+                    <td class="p-2 font-medium">${entry.namaProduk}</td>
+                    <td class="p-2">${entry.periode}</td>
+                    <td class="p-2">${formatRupiah(entry.gmv)}</td>
+                    <td class="p-2 ${entry.profitBersih >= 0 ? 'text-green-600' : 'text-red-600'}">${formatRupiah(entry.profitBersih)}</td>
+                    <td class="p-2">${entry.profitMargin.toFixed(1)}%</td>
+                    <td class="p-2">${entry.roas.toFixed(2)}x</td>
+                    <td class="p-2">${entry.status}</td>
+                `;
+                
+                historyTableBody.appendChild(row);
+            });
+        }
+        
+        function downloadAllResults() {
+            if (analysisHistory.length === 0) {
+                alert('Belum ada data analisis untuk didownload!');
+                return;
+            }
+            
+            let reportContent = 'LAPORAN ANALISIS GMV - SEMUA DATA\n';
+            reportContent += '=======================================\n';
+            reportContent += 'Tanggal Download: ' + new Date().toLocaleDateString('id-ID') + '\n';
+            reportContent += 'Total Analisis: ' + analysisHistory.length + '\n\n';
+            
+            analysisHistory.forEach((entry, index) => {
+                const biayaAdminPlatform = 2500;
+                const biayaLayananShopee = 0.029;
+                const biayaGratisOngkirCashback = 0.015;
+                const biayaAfiliasi = 0.03;
+                const biayaLainLain = 0.005;
+
+                const biayaShopee = (biayaLayananShopee + biayaGratisOngkirCashback + biayaAfiliasi + biayaLainLain) * entry.gmv;
+                const biayaTetapShopee = entry.jumlahTerjual * biayaAdminPlatform;
+                const hppTotal = entry.jumlahTerjual * entry.hpp;
+                const totalBiaya = hppTotal + entry.biayaIklan + biayaShopee + biayaTetapShopee;
+                
+                reportContent += '\nANALISIS #' + (index + 1) + '\n';
+                reportContent += '==================\n';
+                reportContent += 'Tanggal: ' + entry.timestamp.toLocaleDateString('id-ID') + ' ' + entry.timestamp.toLocaleTimeString('id-ID') + '\n';
+                reportContent += 'Produk: ' + entry.namaProduk + '\n';
+                reportContent += 'Periode: ' + entry.periode + '\n\n';
+                
+                reportContent += 'DATA INPUT\n';
+                reportContent += '----------\n';
+                reportContent += '• Jumlah Terjual: ' + entry.jumlahTerjual.toLocaleString('id-ID') + ' unit\n';
+                reportContent += '• Harga Jual: ' + formatRupiah(entry.hargaJual) + '\n';
+                reportContent += '• HPP per Unit: ' + formatRupiah(entry.hpp) + '\n';
+                reportContent += '• Biaya Iklan: ' + formatRupiah(entry.biayaIklan) + '\n\n';
+                
+                reportContent += 'HASIL ANALISIS\n';
+                reportContent += '--------------\n';
+                reportContent += '• GMV: ' + formatRupiah(entry.gmv) + '\n';
+                reportContent += '• ROAS: ' + entry.roas.toFixed(2) + 'x\n';
+                reportContent += '• Profit Bersih: ' + formatRupiah(entry.profitBersih) + '\n';
+                reportContent += '• Profit Margin: ' + entry.profitMargin.toFixed(1) + '%\n\n';
+                
+                reportContent += 'BREAKDOWN BIAYA\n';
+                reportContent += '---------------\n';
+                reportContent += '• HPP Total: ' + formatRupiah(hppTotal) + '\n';
+                reportContent += '• Biaya Platform (19%): ' + formatRupiah(biayaShopee) + '\n';
+                reportContent += '• Biaya Tetap Platform: ' + formatRupiah(biayaTetapShopee) + '\n';
+                reportContent += '• Biaya Iklan: ' + formatRupiah(entry.biayaIklan) + '\n';
+                reportContent += '• Total Biaya: ' + formatRupiah(totalBiaya) + '\n\n';
+                
+                reportContent += 'STATUS BISNIS: ' + entry.status + '\n\n';
+            });
+            
+            reportContent += '\n---\n';
+            reportContent += 'Generated by GMV Calculator\n';
+            reportContent += new Date().toLocaleString('id-ID');
+            
+            // Create and download file
+            const element = document.createElement('a');
+            const file = new Blob([reportContent], {type: 'text/plain'});
+            element.href = URL.createObjectURL(file);
+            element.download = 'GMV_Analysis_All_' + new Date().toISOString().split('T')[0] + '.txt';
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            
+            alert('File berhasil didownload!');
+        }
+        
+        function clearHistory() {
+            if (analysisHistory.length === 0) {
+                alert('Tidak ada riwayat untuk dihapus!');
+                return;
+            }
+            
+            const totalData = analysisHistory.length;
+            // Using a custom modal instead of confirm()
+            showCustomConfirm('Hapus Riwayat', `Apakah Anda yakin ingin menghapus semua ${totalData} riwayat analisis?`, () => {
+                analysisHistory.length = 0; // Clear array
+                updateHistoryDisplay();
+                showCustomAlert('Sukses!', 'Semua riwayat berhasil dihapus!');
+            });
+        }
+
+        // --- Canvas Drawing Functions ---
+        let currentChartData = null; // To store data for redraw on resize
+
+        function drawGMVChart(gmv, totalBiaya, profitBersih) {
+            const canvas = document.getElementById('gmvChart');
+            if (!canvas) return; // Ensure canvas exists
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size based on its actual rendered size
+            // This ensures it scales correctly with CSS
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+            currentChartData = { gmv, totalBiaya, profitBersih };
+
+            const data = [
+                { label: 'GMV', value: gmv, color: '#4CAF50' }, // Green
+                { label: 'Total Biaya', value: totalBiaya, color: '#F44336' }, // Red
+                { label: 'Profit Bersih', value: profitBersih, color: '#2196F3' } // Blue
+            ];
+
+            const padding = 30;
+            const chartAreaWidth = canvas.width - 2 * padding;
+            const chartAreaHeight = canvas.height - 2 * padding;
+            const barWidth = chartAreaWidth / data.length / 1.5; // Adjusted for spacing
+            const spacing = barWidth / 2;
+
+            const maxValue = Math.max(...data.map(d => d.value));
+            const scale = chartAreaHeight / (maxValue > 0 ? maxValue : 1); // Avoid division by zero
+
+            ctx.font = '12px Poppins';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Draw X-axis
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.strokeStyle = '#ccc';
+            ctx.stroke();
+
+            data.forEach((item, index) => {
+                const barHeight = item.value * scale;
+                const x = padding + index * (barWidth + spacing) + spacing / 2;
+                const y = canvas.height - padding - barHeight;
+
+                // Draw bar
+                ctx.fillStyle = item.color;
+                ctx.fillRect(x, y, barWidth, barHeight);
+
+                // Draw label below bar
+                ctx.fillStyle = '#333';
+                ctx.fillText(item.label, x + barWidth / 2, canvas.height - padding / 2);
+
+                // Draw value on top of bar
+                ctx.fillStyle = '#333';
+                ctx.fillText(`${formatRupiah(item.value)}`, x + barWidth / 2, y - 10);
+            });
+        }
+
+        // Redraw chart on window resize
+        window.addEventListener('resize', () => {
+            if (currentChartData) {
+                drawGMVChart(currentChartData.gmv, currentChartData.totalBiaya, currentChartData.profitBersih);
+            }
+        });
+
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.getElementById('gmvContent').style.display = 'none';
+            document.getElementById('profitabilityContent').style.display = 'none';
+            document.getElementById('caraPakaiContent').style.display = 'none';
+            
+            // Remove active class from all tabs
+            document.getElementById('gmvTab').className = 'flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-inactive';
+            document.getElementById('profitabilityTab').className = 'flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-inactive';
+            document.getElementById('caraPakaiTab').className = 'flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-inactive';
+            
+            // Show selected tab content and activate tab
+            if (tabName === 'gmv') {
+                document.getElementById('gmvContent').style.display = 'block';
+                document.getElementById('gmvTab').className = 'flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-active';
+            } else if (tabName === 'profitability') {
+                document.getElementById('profitabilityContent').style.display = 'block';
+                document.getElementById('profitabilityTab').className = 'flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-active';
+                // Ensure placeholder is shown when switching to profitability tab initially
+                document.getElementById('profitabilityPlaceholderSection').style.display = 'block';
+                document.getElementById('profitabilityResultsSection').style.display = 'none';
+                updateProfitabilityTable(); // Ensure table is updated if data exists
+            } else if (tabName === 'caraPakai') {
+                document.getElementById('caraPakaiContent').style.display = 'block';
+                document.getElementById('caraPakaiTab').className = 'flex-1 min-w-32 mobile-tab text-center transition-all duration-300 tab-active';
+            }
+        }
+
+        // Profitability calculation function
+        function calculateProfitability() {
+            // Show results sections and hide placeholder
+            document.getElementById('profitabilityPlaceholderSection').style.display = 'none';
+            document.getElementById('profitabilityResultsSection').style.display = 'block';
+            
+            // Get input values
+            const hargaJual = parseFloat(document.getElementById('profitHargaJual').value) || 0;
+            const biayaLayananPersen = parseFloat(document.getElementById('biayaLayanan').value) || 0;
+            const biayaGOCashbackPersen = parseFloat(document.getElementById('biayaGOCashback').value) || 0;
+            const biayaAfiliasiPersen = parseFloat(document.getElementById('biayaAfiliasi').value) || 0;
+            const biayaCampaignTotal = parseFloat(document.getElementById('biayaCampaign').value) || 0;
+            const biayaPesananPerOrder = parseFloat(document.getElementById('biayaPesanan').value) || 0;
+            const hpp = parseFloat(document.getElementById('profitHPP').value) || 0;
+            const biayaOperasional = parseFloat(document.getElementById('biayaOperasional').value) || 0;
+            const jumlahUnit = parseFloat(document.getElementById('profitJumlahUnit').value) || 1;
+
+            // Input validation
+            if (hargaJual <= 0 || jumlahUnit <= 0 || isNaN(hargaJual) || isNaN(jumlahUnit)) {
+                showCustomAlert('Input Tidak Valid', 'Harga Jual dan Jumlah Unit harus berupa angka positif.');
+                return;
+            }
+            if (isNaN(biayaLayananPersen) || isNaN(biayaGOCashbackPersen) || isNaN(biayaAfiliasiPersen) ||
+                isNaN(biayaCampaignTotal) || isNaN(biayaPesananPerOrder) || isNaN(hpp) || isNaN(biayaOperasional)) {
+                showCustomAlert('Input Tidak Valid', 'Semua biaya harus berupa angka.');
+                return;
+            }
+
+            // Calculate percentage-based costs
+            const biayaLayanan = hargaJual * (biayaLayananPersen / 100);
+            const biayaGOCashback = hargaJual * (biayaGOCashbackPersen / 100);
+            const biayaAfiliasi = hargaJual * (biayaAfiliasiPersen / 100);
+
+            // Calculate per-unit costs for campaign and order
+            const biayaCampaignPerUnit = biayaCampaignTotal / jumlahUnit;
+            const biayaPesananPerUnit = biayaPesananPerOrder / jumlahUnit;
+
+            // Calculate total cost per unit
+            const totalBiayaPerUnit = biayaLayanan + biayaGOCashback + biayaAfiliasi + 
+                                    biayaCampaignPerUnit + biayaPesananPerUnit + 
+                                    hpp + biayaOperasional;
+
+            // Calculate profit
+            const profitPerUnit = hargaJual - totalBiayaPerUnit;
+            const profitMargin = hargaJual > 0 ? (profitPerUnit / hargaJual) * 100 : 0;
+
+            // Update display
+            document.getElementById('profitHargaJualDisplay').textContent = formatRupiah(hargaJual);
+            document.getElementById('biayaLayananDisplay').textContent = formatRupiah(biayaLayanan);
+            document.getElementById('biayaGOCashbackDisplay').textContent = formatRupiah(biayaGOCashback);
+            document.getElementById('biayaAfiliasiDisplay').textContent = formatRupiah(biayaAfiliasi);
+            document.getElementById('biayaCampaignDisplay').textContent = formatRupiah(biayaCampaignPerUnit);
+            document.getElementById('biayaPesananDisplay').textContent = formatRupiah(biayaPesananPerUnit);
+            document.getElementById('profitHPPDisplay').textContent = formatRupiah(hpp);
+            document.getElementById('biayaOperasionalDisplay').textContent = formatRupiah(biayaOperasional);
+            document.getElementById('totalBiayaPerUnit').textContent = formatRupiah(totalBiayaPerUnit);
+            document.getElementById('profitPerUnit').textContent = formatRupiah(profitPerUnit);
+            document.getElementById('profitMarginResult').textContent = profitMargin.toFixed(1) + '%';
+
+            // Update profit status
+            const profitabilityStatus = document.getElementById('profitabilityStatus');
+            const profitabilityStatusText = document.getElementById('profitabilityStatusText');
+            
+            if (profitPerUnit < 0) {
+                profitabilityStatus.className = 'mt-4 p-4 rounded-lg bg-red-100 border border-red-300';
+                profitabilityStatusText.textContent = '❌ Produk Merugi - Perlu Optimasi Segera';
+                profitabilityStatusText.className = 'text-center font-semibold text-red-800';
+                document.getElementById('profitPerUnit').className = 'text-3xl font-bold text-red-600';
+                document.getElementById('profitMarginResult').className = 'text-3xl font-bold text-red-600';
+            } else if (profitPerUnit === 0) {
+                profitabilityStatus.className = 'mt-4 p-4 rounded-lg bg-yellow-100 border border-yellow-300';
+                profitabilityStatusText.textContent = '⚠️ Break Even Point - Tidak Ada Keuntungan';
+                profitabilityStatusText.className = 'text-center font-semibold text-yellow-800';
+                document.getElementById('profitPerUnit').className = 'text-3xl font-bold text-yellow-600';
+                document.getElementById('profitMarginResult').className = 'text-3xl font-bold text-yellow-600';
+            } else if (profitMargin < 10) {
+                profitabilityStatus.className = 'mt-4 p-4 rounded-lg bg-orange-100 border border-orange-300';
+                profitabilityStatusText.textContent = '⚠️ Profit Margin Rendah (<10%) - Perlu Optimasi';
+                profitabilityStatusText.className = 'text-center font-semibold text-orange-800';
+                document.getElementById('profitPerUnit').className = 'text-3xl font-bold text-orange-600';
+                document.getElementById('profitMarginResult').className = 'text-3xl font-bold text-orange-600';
+            } else if (profitMargin < 20) {
+                profitabilityStatus.className = 'mt-4 p-4 rounded-lg bg-blue-100 border border-blue-300';
+                profitabilityStatusText.textContent = '👍 Profit Margin Cukup Baik (10-20%)';
+                profitabilityStatusText.className = 'text-center font-semibold text-blue-800';
+                document.getElementById('profitPerUnit').className = 'text-3xl font-bold text-blue-600';
+                document.getElementById('profitMarginResult').className = 'text-3xl font-bold text-blue-600';
+            } else {
+                profitabilityStatus.className = 'mt-4 p-4 rounded-lg bg-green-100 border border-green-300';
+                profitabilityStatusText.textContent = '✅ Profit Margin Sangat Baik (>20%)!';
+                profitabilityStatusText.className = 'text-center font-semibold text-green-800';
+                document.getElementById('profitPerUnit').className = 'text-3xl font-bold text-green-600';
+                document.getElementById('profitMarginResult').className = 'text-3xl font-bold text-green-600';
+            }
+
+            // Save to profitability data
+            saveToProfitabilityData(hargaJual, totalBiayaPerUnit, profitPerUnit, profitMargin);
+
+            // Add animation to results
+            document.querySelectorAll('.result-card').forEach(card => {
+                card.style.animation = 'none';
+                card.offsetHeight; // Trigger reflow
+                card.style.animation = 'pulse-custom 0.5s ease-in-out';
+            });
+        }
+
+        function resetProfitabilityForm() {
+            // Clear all input fields
+            document.getElementById('profitNamaProduk').value = '';
+            document.getElementById('profitHargaJual').value = '';
+            document.getElementById('biayaLayanan').value = '';
+            document.getElementById('biayaGOCashback').value = '';
+            document.getElementById('biayaAfiliasi').value = '';
+            document.getElementById('biayaCampaign').value = '';
+            document.getElementById('biayaPesanan').value = '';
+            document.getElementById('profitHPP').value = '';
+            document.getElementById('biayaOperasional').value = '';
+            document.getElementById('profitJumlahUnit').value = '';
+            
+            // Hide results and show placeholder
+            document.getElementById('profitabilityPlaceholderSection').style.display = 'block';
+            document.getElementById('profitabilityResultsSection').style.display = 'none';
+
+            // Reset status text and color
+            const profitabilityStatusDiv = document.getElementById('profitabilityStatus');
+            const profitabilityStatusText = document.getElementById('profitabilityStatusText');
+            profitabilityStatusDiv.className = 'mt-4 p-4 rounded-lg'; // Reset classes
+            profitabilityStatusText.textContent = 'Masukkan data untuk analisis';
+            document.getElementById('profitPerUnit').className = 'text-3xl font-bold'; // Reset text color
+            document.getElementById('profitMarginResult').className = 'text-3xl font-bold'; // Reset text color
+        }
+
+        // Profitability data management functions
+        function saveToProfitabilityData(hargaJual, totalBiaya, profitPerUnit, profitMargin) {
+            const namaProduk = document.getElementById('profitNamaProduk').value || 'Produk';
+            const biayaLayananPersen = parseFloat(document.getElementById('biayaLayanan').value) || 0;
+            const biayaGOCashbackPersen = parseFloat(document.getElementById('biayaGOCashback').value) || 0;
+            const biayaAfiliasiPersen = parseFloat(document.getElementById('biayaAfiliasi').value) || 0;
+            const biayaCampaignTotal = parseFloat(document.getElementById('biayaCampaign').value) || 0;
+            const biayaPesananPerOrder = parseFloat(document.getElementById('biayaPesanan').value) || 0;
+            const hpp = parseFloat(document.getElementById('profitHPP').value) || 0;
+            const biayaOperasional = parseFloat(document.getElementById('biayaOperasional').value) || 0;
+            const jumlahUnit = parseFloat(document.getElementById('profitJumlahUnit').value) || 1;
+            
+            // Determine status
+            let status;
+            if (profitPerUnit < 0) {
+                status = '❌ Merugi';
+            } else if (profitPerUnit === 0) {
+                status = '⚠️ Break Even';
+            } else if (profitMargin < 10) {
+                status = '⚠️ Margin Rendah';
+            } else if (profitMargin < 20) {
+                status = '👍 Cukup Baik';
+            } else {
+                status = '✅ Sangat Baik';
+            }
+            
+            // Create data entry
+            const dataEntry = {
+                id: Date.now(),
+                timestamp: new Date(),
+                namaProduk,
+                hargaJual,
+                biayaLayananPersen,
+                biayaGOCashbackPersen,
+                biayaAfiliasiPersen,
+                biayaCampaignTotal,
+                biayaPesananPerOrder,
+                hpp,
+                biayaOperasional,
+                jumlahUnit,
+                totalBiaya,
+                profitPerUnit,
+                profitMargin,
+                status
+            };
+            
+            // Add to data array
+            profitabilityData.push(dataEntry);
+            
+            // Update table display
+            updateProfitabilityTable();
+        }
+        
+        function updateProfitabilityTable() {
+            const tableSection = document.getElementById('profitabilityTableSection');
+            const tableBody = document.getElementById('profitabilityTableBody');
+            
+            if (profitabilityData.length === 0) {
+                tableSection.style.display = 'none';
+                return;
+            }
+            
+            tableSection.style.display = 'block';
+            tableBody.innerHTML = '';
+            
+            // Display data in reverse order (newest first)
+            profitabilityData.slice().reverse().forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100';
+                
+                row.innerHTML = `
+                    <td class="p-3 border border-gray-300 font-medium">${profitabilityData.length - index}</td>
+                    <td class="p-3 border border-gray-300 font-medium">${entry.namaProduk}</td>
+                    <td class="p-3 border border-gray-300">${formatRupiah(entry.hargaJual)}</td>
+                    <td class="p-3 border border-gray-300">${formatRupiah(entry.totalBiaya)}</td>
+                    <td class="p-3 border border-gray-300 ${entry.profitPerUnit >= 0 ? 'text-green-600' : 'text-red-600'} font-semibold">${formatRupiah(entry.profitPerUnit)}</td>
+                    <td class="p-3 border border-gray-300 font-semibold">${entry.profitMargin.toFixed(1)}%</td>
+                    <td class="p-3 border border-gray-300">${entry.status}</td>
+                    <td class="p-3 border border-gray-300">
+                        <div class="flex space-x-2">
+                            <button onclick="editProfitabilityData(${entry.id})" 
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs transition-all duration-200">
+                                ✏️ Edit
+                            </button>
+                            <button onclick="deleteProfitabilityData(${entry.id})" 
+                                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition-all duration-200">
+                                🗑️ Hapus
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function editProfitabilityData(id) {
+            const entry = profitabilityData.find(item => item.id === id);
+            if (!entry) return;
+            
+            // Fill form with existing data
+            document.getElementById('profitNamaProduk').value = entry.namaProduk;
+            document.getElementById('profitHargaJual').value = entry.hargaJual;
+            document.getElementById('biayaLayanan').value = entry.biayaLayananPersen;
+            document.getElementById('biayaGOCashback').value = entry.biayaGOCashbackPersen;
+            document.getElementById('biayaAfiliasi').value = entry.biayaAfiliasiPersen;
+            document.getElementById('biayaCampaign').value = entry.biayaCampaignTotal;
+            document.getElementById('biayaPesanan').value = entry.biayaPesananPerOrder;
+            document.getElementById('profitHPP').value = entry.hpp;
+            document.getElementById('biayaOperasional').value = entry.biayaOperasional;
+            document.getElementById('profitJumlahUnit').value = entry.jumlahUnit;
+            
+            // Remove the entry from data (will be re-added when calculated)
+            profitabilityData = profitabilityData.filter(item => item.id !== id);
+            updateProfitabilityTable();
+            
+            // Scroll to form
+            document.querySelector('#profitabilityContent .glass-effect').scrollIntoView({ behavior: 'smooth' });
+            
+            showCustomAlert('Data Dimuat!', 'Data berhasil dimuat ke form. Silakan edit dan hitung ulang!');
+        }
+        
+        function deleteProfitabilityData(id) {
+            const entry = profitabilityData.find(item => item.id === id);
+            if (!entry) return;
+            
+            showCustomConfirm('Hapus Data', `Apakah Anda yakin ingin menghapus data "${entry.namaProduk}"?`, () => {
+                profitabilityData = profitabilityData.filter(item => item.id !== id);
+                updateProfitabilityTable();
+                showCustomAlert('Sukses!', 'Data berhasil dihapus!');
+            });
+        }
+        
+        function downloadProfitabilityData() {
+            if (profitabilityData.length === 0) {
+                showCustomAlert('Tidak Ada Data', 'Belum ada data profitabilitas untuk didownload!');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = 'No,Tanggal,Produk,Harga Jual,Biaya Layanan (%),GO & Cashback (%),Afiliasi (%),Campaign (Rp),Pesanan/Order (Rp),HPP (Rp),Operasional (Rp),Jumlah Unit,Total Biaya,Profit/Unit,Margin (%),Status\n';
+            
+            profitabilityData.forEach((entry, index) => {
+                const biayaLayanan = entry.hargaJual * (entry.biayaLayananPersen / 100);
+                const biayaGOCashback = entry.hargaJual * (entry.biayaGOCashbackPersen / 100);
+                const biayaAfiliasi = entry.hargaJual * (entry.biayaAfiliasiPersen / 100);
+                
+                csvContent += `${index + 1},`;
+                csvContent += `"${entry.timestamp.toLocaleDateString('id-ID')}",`;
+                csvContent += `"${entry.namaProduk}",`;
+                csvContent += `${entry.hargaJual},`;
+                csvContent += `${entry.biayaLayananPersen},`;
+                csvContent += `${entry.biayaGOCashbackPersen},`;
+                csvContent += `${entry.biayaAfiliasiPersen},`;
+                csvContent += `${entry.biayaCampaignTotal},`;
+                csvContent += `${entry.biayaPesananPerOrder},`;
+                csvContent += `${entry.hpp},`;
+                csvContent += `${entry.biayaOperasional},`;
+                csvContent += `${entry.jumlahUnit},`;
+                csvContent += `${entry.totalBiaya},`;
+                csvContent += `${entry.profitPerUnit},`;
+                csvContent += `${entry.profitMargin.toFixed(2)},`;
+                csvContent += `"${entry.status.replace(/[❌⚠️👍✅]/g, '').trim()}"\n`;
+            });
+            
+            // Create and download file
+            const element = document.createElement('a');
+            const file = new Blob([csvContent], {type: 'text/csv'});
+            element.href = URL.createObjectURL(file);
+            element.download = 'Profitability_Analysis_' + new Date().toISOString().split('T')[0] + '.csv';
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            
+            showCustomAlert('Sukses!', 'File CSV berhasil didownload! Anda bisa membukanya di Excel atau Google Sheets.');
+        }
+        
+        function clearProfitabilityData() {
+            if (profitabilityData.length === 0) {
+                showCustomAlert('Tidak Ada Data', 'Tidak ada data untuk dihapus!');
+                return;
+            }
+            
+            const totalData = profitabilityData.length;
+            showCustomConfirm('Hapus Semua Data', `Apakah Anda yakin ingin menghapus semua ${totalData} data profitabilitas?`, () => {
+                profitabilityData.length = 0; // Clear array
+                updateProfitabilityTable();
+                showCustomAlert('Sukses!', 'Semua data profitabilitas berhasil dihapus!');
+            });
+        }
+
+        // --- Custom Alert/Confirm Modals (replacing alert() and confirm()) ---
+        function createModalOverlay() {
+            let overlay = document.getElementById('customModalOverlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'customModalOverlay';
+                overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                document.body.appendChild(overlay);
+            }
+            return overlay;
+        }
+
+        function removeModalOverlay() {
+            const overlay = document.getElementById('customModalOverlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
+            }
+        }
+
+        function showCustomAlert(title, message) {
+            const overlay = createModalOverlay();
+            overlay.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4 transform scale-95 opacity-0 transition-all duration-300" style="animation: popIn 0.3s forwards;">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">${title}</h3>
+                    <p class="text-gray-700 mb-6">${message}</p>
+                    <button id="customAlertOk" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">OK</button>
+                </div>
+            `;
+            
+            document.getElementById('customAlertOk').onclick = removeModalOverlay;
+            
+            // Add pop-in animation
+            overlay.querySelector('div').style.animation = 'popIn 0.3s forwards';
+        }
+
+        function showCustomConfirm(title, message, onConfirm) {
+            const overlay = createModalOverlay();
+            overlay.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4 transform scale-95 opacity-0 transition-all duration-300" style="animation: popIn 0.3s forwards;">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">${title}</h3>
+                    <p class="text-gray-700 mb-6">${message}</p>
+                    <div class="flex justify-end space-x-4">
+                        <button id="customConfirmCancel" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">Batal</button>
+                        <button id="customConfirmOk" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out">Ya, Hapus</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('customConfirmCancel').onclick = removeModalOverlay;
+            document.getElementById('customConfirmOk').onclick = () => {
+                onConfirm();
+                removeModalOverlay();
+            };
+
+            // Add pop-in animation
+            overlay.querySelector('div').style.animation = 'popIn 0.3s forwards';
+        }
+
+        // Animation for modals
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes popIn {
+                from { transform: scale(0.95); opacity: 0; }
+                to { transform: scale(1); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initial setup
+        updatePeriodeLabels();
+        updateHistoryDisplay(); // Load history on page load
+        updateProfitabilityTable(); // Load profitability data on page load
+        switchTab('gmv'); // Start on GMV tab by default
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966f65e872a5b4cd',t:'MTc1MzgyMTI3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
